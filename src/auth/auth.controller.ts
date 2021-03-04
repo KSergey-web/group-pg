@@ -8,7 +8,13 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { promises } from 'dns';
 import { UserEntity, UserWithTokenEntity } from 'src/user/entities/user.entity';
 import { LoginDTO, RegisterDTO } from '../user/dto/user.dto';
@@ -28,7 +34,7 @@ export class AuthController {
     description: 'Logged in',
     type: UserWithTokenEntity,
   })
-  @ApiUnauthorizedResponse({description: 'Invalid credentials'})
+  @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
   @Post('login')
   async login(@Body() userDTO: LoginDTO): Promise<UserWithTokenEntity> {
     const user = await this.userService.findByLogin(userDTO);
@@ -36,7 +42,7 @@ export class AuthController {
       login: user.login,
     };
     const token = await this.authService.login(payload);
-    return { _id: user._id, login: user.login ,token: token };
+    return { _id: user._id, login: user.login, token: token };
   }
 
   @Post('register')
@@ -44,13 +50,13 @@ export class AuthController {
     description: 'You registered and logged in',
     type: UserWithTokenEntity,
   })
-  @ApiBadRequestResponse({ description: 'User already exists.'})
-  async register(@Body() userDTO: RegisterDTO):  Promise<UserWithTokenEntity> {
+  @ApiBadRequestResponse({ description: 'User already exists.' })
+  async register(@Body() userDTO: RegisterDTO): Promise<UserWithTokenEntity> {
     const user = await this.userService.create(userDTO);
     const payload = {
       login: user.login,
     };
     const token = await this.authService.login(payload);
-    return { _id: user._id, login: user.login ,token: token };
+    return { _id: user._id, login: user.login, token: token };
   }
 }

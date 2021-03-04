@@ -1,0 +1,477 @@
+
+window.onload = function() {
+  // Build a system
+  var url = window.location.search.match(/url=([^&]+)/);
+  if (url && url.length > 1) {
+    url = decodeURIComponent(url[1]);
+  } else {
+    url = window.location.origin;
+  }
+  var options = {
+  "swaggerDoc": {
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Roulette rest API",
+      "description": "API description",
+      "version": "1.0",
+      "contact": {}
+    },
+    "tags": [
+      {
+        "name": "API",
+        "description": ""
+      }
+    ],
+    "servers": [],
+    "components": {
+      "securitySchemes": {
+        "bearer": {
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "type": "http"
+        }
+      },
+      "schemas": {
+        "LoginDTO": {
+          "type": "object",
+          "properties": {
+            "login": {
+              "type": "string",
+              "example": "s_kulaev",
+              "description": "It should contains only letters and numbers.",
+              "minLength": 2,
+              "maxLength": 14
+            },
+            "password": {
+              "type": "string",
+              "example": "Kulaev1999",
+              "description": "should corresponds to /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/",
+              "minLength": 2,
+              "maxLength": 14
+            }
+          },
+          "required": [
+            "login",
+            "password"
+          ]
+        },
+        "UserWithTokenEntity": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "603fdf6e6271140dc0fcf3cf"
+            },
+            "login": {
+              "type": "string",
+              "example": "s_kulaev"
+            },
+            "token": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InN0cmluZyIsImlhdCI6MTYxNDgwNTMwMCwiZXhwIjoxNjE0ODA4OTAwfQ.f4S7ta5LyN8EQgBp4FcqUmHa3fr2wcG8uHkFJc97g0E"
+            }
+          },
+          "required": [
+            "_id",
+            "login",
+            "token"
+          ]
+        },
+        "RegisterDTO": {
+          "type": "object",
+          "properties": {
+            "login": {
+              "type": "string",
+              "example": "s_kulaev",
+              "description": "It should contains only letters and numbers.",
+              "minLength": 2,
+              "maxLength": 14
+            },
+            "password": {
+              "type": "string",
+              "example": "Kulaev1999",
+              "description": "should corresponds to /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/",
+              "minLength": 2,
+              "maxLength": 14
+            }
+          },
+          "required": [
+            "login",
+            "password"
+          ]
+        },
+        "UserEntity": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "603fdf6e6271140dc0fcf3cf"
+            },
+            "login": {
+              "type": "string",
+              "example": "s_kulaev"
+            }
+          },
+          "required": [
+            "_id",
+            "login"
+          ]
+        },
+        "CreateRoomDTO": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "my room",
+              "description": "name of room",
+              "minLength": 2,
+              "maxLength": 15
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        "RoomEntity": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "603fdf6e6271140dc0fcf3cf"
+            },
+            "name": {
+              "type": "string",
+              "example": "my room"
+            },
+            "user": {
+              "type": "string",
+              "example": "sergey"
+            }
+          },
+          "required": [
+            "_id",
+            "name",
+            "user"
+          ]
+        },
+        "NoteEntity": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "603fdf6e6271140dc0fcf3cf"
+            },
+            "room": {
+              "type": "string",
+              "example": "my room"
+            },
+            "user": {
+              "type": "string",
+              "example": "sergey"
+            },
+            "date": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "rate": {
+              "type": "string",
+              "enum": [
+                "red",
+                "green",
+                "black"
+              ]
+            },
+            "result": {
+              "type": "string",
+              "enum": [
+                "win",
+                "loose"
+              ]
+            }
+          },
+          "required": [
+            "_id",
+            "room",
+            "user",
+            "date",
+            "rate",
+            "result"
+          ]
+        }
+      }
+    },
+    "paths": {
+      "/": {
+        "get": {
+          "operationId": "AppController_getHello",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          }
+        }
+      },
+      "/auth/login": {
+        "post": {
+          "operationId": "AuthController_login",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginDTO"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Logged in",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserWithTokenEntity"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Invalid credentials"
+            }
+          },
+          "tags": [
+            "auth"
+          ]
+        }
+      },
+      "/auth/register": {
+        "post": {
+          "operationId": "AuthController_register",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterDTO"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "You registered and logged in",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserWithTokenEntity"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "User already exists."
+            }
+          },
+          "tags": [
+            "auth"
+          ]
+        }
+      },
+      "/user": {
+        "get": {
+          "operationId": "UserController_currentUser",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Current User",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserEntity"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "user"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/room": {
+        "post": {
+          "operationId": "RoomController_room",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateRoomDTO"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Room created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RoomEntity"
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "room"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/room/all": {
+        "get": {
+          "operationId": "RoomController_rooms",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Array rooms",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/RoomEntity"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "room"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/room/{id}": {
+        "delete": {
+          "operationId": "RoomController_delete",
+          "parameters": [
+            {
+              "name": "id",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Room was deleted"
+            },
+            "400": {
+              "description": "You are not owner this room"
+            },
+            "404": {
+              "description": "Room not found"
+            }
+          },
+          "tags": [
+            "room"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/note/all": {
+        "get": {
+          "operationId": "NoteController_notes",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Array notes",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/NoteEntity"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "tags": [
+            "note"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      }
+    }
+  },
+  "customOptions": {
+    "persistAuthorization": true
+  },
+  "swaggerUrl": {}
+};
+  url = options.swaggerUrl || url
+  var urls = options.swaggerUrls
+  var customOptions = options.customOptions
+  var spec1 = options.swaggerDoc
+  var swaggerOptions = {
+    spec: spec1,
+    url: url,
+    urls: urls,
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "StandaloneLayout"
+  }
+  for (var attrname in customOptions) {
+    swaggerOptions[attrname] = customOptions[attrname];
+  }
+  var ui = SwaggerUIBundle(swaggerOptions)
+
+  if (customOptions.oauth) {
+    ui.initOAuth(customOptions.oauth)
+  }
+
+  if (customOptions.authAction) {
+    ui.authActions.authorize(customOptions.authAction)
+  }
+
+  window.ui = ui
+}

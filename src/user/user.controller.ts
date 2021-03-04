@@ -22,11 +22,11 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Current User',
-    type: UserEntity
+    type: UserEntity,
   })
   @UseGuards(JwtAuthGuard)
   @Get()
   currentUser(@User() user: UserDocument): UserEntity {
-    return {_id: user._id, login: user.login};
+    return { _id: user._id, login: user.login };
   }
 }

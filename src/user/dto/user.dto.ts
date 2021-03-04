@@ -24,7 +24,7 @@ export class LoginDTO {
   @MaxLength(14)
   @IsAlphanumeric()
   @ApiProperty({
-    example:"s_kulaev",
+    example: 's_kulaev',
     description: 'It should contains only letters and numbers.',
     minLength: 2,
     maxLength: 14,
@@ -33,13 +33,14 @@ export class LoginDTO {
 
   @IsString()
   @IsNotEmpty()
- // @Matches(
-   // /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/,
-   // { message: 'Weak password' },
+  // @Matches(
+  // /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/,
+  // { message: 'Weak password' },
   //)
   @ApiProperty({
     example: 'Kulaev1999',
-    description: 'should corresponds to /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/',
+    description:
+      'should corresponds to /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/',
     minLength: 2,
     maxLength: 14,
   })
@@ -47,4 +48,3 @@ export class LoginDTO {
 }
 
 export class RegisterDTO extends LoginDTO {}
-
