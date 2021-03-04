@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { resultEnum } from 'src/shared/enums/roulette.enum';
 import { CreateNoteDTO } from './dto/note.dto';
 import { Note, NoteDocument } from './schemas/note.schema';
 
@@ -15,9 +16,26 @@ export class NoteService {
     return note;
   }
 
-  async getNotes(): Promise<Array<NoteDocument>> {
+  async createManyNotesWithResult(
+    arratDto: Array<CreateNoteDTO>,
+    color: string,
+  ) {
+    arratDto.forEach(async (item, i, arr) => {
+      if (item.rate == color) {
+        item.result = resultEnum.win;
+      } else {
+        item.result = resultEnum.loose;
+      }
+      this.createNote(item);
+    });
+  }
+
+  async getNotes(userId: string): Promise<Array<NoteDocument>> {
+    const filter: any = {
+      user: userId,
+    };
     const notes = await this.noteModel
-      .find()
+      .find(filter)
       .populate('user', 'login')
       .populate('room', 'name');
     return notes;

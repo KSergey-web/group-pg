@@ -12,7 +12,8 @@ import {
 import { Server, Socket } from 'socket.io';
 import { CreateNoteDTO } from 'src/note/dto/note.dto';
 import { ObjectIdDTO } from 'src/shared/shared.dto';
-import { AuthDto } from './dto/play.dto';
+import { AuthDto, RateDTO } from './dto/play.dto';
+import { RateEntity } from './entities/play.entity';
 import { PlayService } from './play.service';
 
 @WebSocketGateway()
@@ -29,22 +30,27 @@ export class PlayGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @ApiOkResponse()
-  @SubscribeMessage('Rate')
+  @SubscribeMessage('rate')
   handleMessage(
-    @MessageBody() dto: CreateNoteDTO,
+    @MessageBody() dto: RateDTO,
     @ConnectedSocket() client: Socket,
   ): void {
     this.logger.log(dto.rate);
-    //this.server.to(dto.chat).emit('msgToClient', message);
+    this.playService.makeRate(dto);
+    const res: RateEntity = {
+      user: dto.login,
+      rate: dto.rate,
+    };
+    this.server.to(dto.room).emit('somebodyRate', res);
   }
 
-  @SubscribeMessage('LeaveRoom')
+  @SubscribeMessage('leaveRoom')
   exitTeam(@MessageBody() dto: ObjectIdDTO, @ConnectedSocket() client: Socket) {
     this.logger.log(dto.id);
     this.playService.clientLeaveRoom(client, dto.id);
   }
 
-  @SubscribeMessage('EnterRoom')
+  @SubscribeMessage('enterRoom')
   enterTeam(
     @MessageBody() dto: ObjectIdDTO,
     @ConnectedSocket() client: Socket,

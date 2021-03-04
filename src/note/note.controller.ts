@@ -24,7 +24,7 @@ export class NoteController {
   @Get('all')
   async notes(@User() { _id }: UserDocument): Promise<Array<NoteEntity>> {
     let notes: Array<NoteEntity> = [];
-    (await this.noteService.getNotes()).forEach(function(item, i, arr) {
+    (await this.noteService.getNotes(_id)).forEach(function(item, i, arr) {
       notes.push({
         _id: item._id,
         rate: item.rate,

@@ -18,7 +18,7 @@ import {
   OmitType,
   PartialType,
 } from '@nestjs/swagger';
-import { rateEnum } from 'src/shared/enums/role-user.enum';
+import { rateEnum, resultEnum } from 'src/shared/enums/roulette.enum';
 
 export class CreateNoteDTO {
   @ApiProperty()
@@ -32,4 +32,8 @@ export class CreateNoteDTO {
   @ApiProperty()
   @IsMongoId()
   room: string;
+
+  @ApiPropertyOptional()
+  @IsEnum(resultEnum)
+  result: string;
 }
