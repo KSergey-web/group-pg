@@ -38,10 +38,10 @@ export class PlayGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log(dto.rate);
     this.playService.makeRate(dto);
     const res: RateEntity = {
-      user: dto.login,
+      login: dto.login,
       rate: dto.rate,
     };
-    this.server.to(dto.room).emit('somebodyRate', res);
+    this.server.to(dto.room).emit('someBodyRate', res);
   }
 
   @SubscribeMessage('leaveRoom')

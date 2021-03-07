@@ -37,7 +37,7 @@ export class NoteService {
     const notes = await this.noteModel
       .find(filter)
       .populate('user', 'login')
-      .populate('room', 'name');
+      .populate('room', 'name').exec();
     return notes;
   }
 }

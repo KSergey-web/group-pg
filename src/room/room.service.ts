@@ -10,12 +10,12 @@ export class RoomService {
   async createRoom(name: string, userId: string): Promise<RoomDocument> {
     const room = new this.roomModel({ name: name, user: userId });
     await room.save();
-    room.populate('user');
+    await room.populate('user').execPopulate();
     return room;
   }
 
   async getRooms(): Promise<Array<RoomDocument>> {
-    const rooms = await this.roomModel.find().populate('user');
+    const rooms = await this.roomModel.find().populate('user').exec();
     return rooms;
   }
 

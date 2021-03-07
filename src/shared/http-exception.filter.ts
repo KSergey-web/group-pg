@@ -34,7 +34,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       queryreq: request.query,
       cookiesreq: request.cookies,
     };
-
+    console.log(errorResponse);
     response.status(status).json(errorResponse);
   }
 }

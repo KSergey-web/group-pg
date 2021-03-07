@@ -24,7 +24,7 @@ export class LoginDTO {
   @MaxLength(14)
   @IsAlphanumeric()
   @ApiProperty({
-    example: 's_kulaev',
+    example: 'skulaev',
     description: 'It should contains only letters and numbers.',
     minLength: 2,
     maxLength: 14,

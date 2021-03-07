@@ -5,7 +5,7 @@ export class UserEntity {
   @ApiProperty({ example: '603fdf6e6271140dc0fcf3cf' })
   _id: string;
 
-  @ApiProperty({ example: 's_kulaev' })
+  @ApiProperty({ example: 'skulaev' })
   login: string;
 }
 

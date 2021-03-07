@@ -7,5 +7,5 @@ export class RateEntity {
   rate: string;
 
   @ApiProperty({ example: 'sergey' })
-  user: string;
+  login: string;
 }
