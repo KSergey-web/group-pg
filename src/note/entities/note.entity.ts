@@ -16,7 +16,7 @@ export class NoteEntity {
   date: Date;
 
   @ApiProperty({ enum: rateEnum })
-  rate: string;
+  color: string;
 
   @ApiProperty({ enum: resultEnum })
   result: string;

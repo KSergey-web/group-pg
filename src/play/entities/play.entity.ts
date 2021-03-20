@@ -4,7 +4,7 @@ import { rateEnum, resultEnum } from 'src/shared/enums/roulette.enum';
 
 export class RateEntity {
   @ApiProperty({ example: 'red, green, black' })
-  rate: string;
+  color: string;
 
   @ApiProperty({ example: 'sergey' })
   login: string;

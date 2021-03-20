@@ -10,6 +10,7 @@ export class NoteService {
   constructor(@InjectModel(Note.name) private noteModel: Model<NoteDocument>) {}
 
   async createNote(dto: CreateNoteDTO): Promise<NoteDocument> {
+    console.log(dto);
     const note = new this.noteModel(dto);
     await note.save();
     note.populate('user');
@@ -21,7 +22,7 @@ export class NoteService {
     color: string,
   ) {
     arratDto.forEach(async (item, i, arr) => {
-      if (item.rate == color) {
+      if (item.color == color) {
         item.result = resultEnum.win;
       } else {
         item.result = resultEnum.loose;

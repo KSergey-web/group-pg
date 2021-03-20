@@ -117,7 +117,7 @@ export class PlayService {
       }
       this.noteService.createManyNotesWithResult(rates, color);
       rates.splice(0, rates.length);
-    }, 20000);
+    }, 10000);
     return timerId;
   }
 

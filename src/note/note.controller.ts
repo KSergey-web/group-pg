@@ -27,11 +27,11 @@ export class NoteController {
     (await this.noteService.getNotes(_id)).forEach(function(item, i, arr) {
       notes.push({
         _id: item._id,
-        rate: item.rate,
+        color: item.color,
         result: item.result,
         date: item.date,
-        user: item.user.toString(),
-        room: item.room.toString(),
+        user: item.user.login.toString(),
+        room: item.room.name.toString(),
       });
     });
     return notes;

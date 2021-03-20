@@ -23,7 +23,7 @@ import { rateEnum, resultEnum } from 'src/shared/enums/roulette.enum';
 export class CreateNoteDTO {
   @ApiProperty()
   @IsEnum(rateEnum)
-  rate: string;
+  color: string;
 
   @ApiProperty()
   @IsMongoId()

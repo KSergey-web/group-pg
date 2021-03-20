@@ -12,7 +12,7 @@ export class Note {
   date: Date;
 
   @Prop({ required: true })
-  rate: string;
+  color: string;
 
   @Prop({ default: '' })
   result: string;
