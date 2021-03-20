@@ -8,7 +8,8 @@ import {
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
+  app.setGlobalPrefix('v1/api');
   const options = new DocumentBuilder()
     .setTitle('Roulette rest API')
     .setDescription('API description')

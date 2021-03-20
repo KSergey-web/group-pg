@@ -66,7 +66,7 @@ export class RoomController {
   async delete(
     @Param() params: ObjectIdDTO,
     @User() { _id }: UserDocument,
-  ): Promise<String> {
-    return this.roomService.deleteRoom(params.id, _id);
+  ): Promise<any> {
+    return { message: this.roomService.deleteRoom(params.id, _id) };
   }
 }

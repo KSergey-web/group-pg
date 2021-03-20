@@ -18,7 +18,9 @@ import { PlayService } from './play.service';
 
 @WebSocketGateway()
 export class PlayGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(private readonly playService: PlayService) {}
+  constructor(private readonly playService: PlayService) {
+    setTimeout(() => {this.playService.setServer(this.server)},1000)
+  }
 
   @WebSocketServer() server: Server;
 
@@ -26,6 +28,7 @@ export class PlayGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('auth')
   auth(@MessageBody() dto: AuthDto, @ConnectedSocket() client: Socket) {
+    this.playService.setServer(this.server);
     return this.playService.auth(client, dto);
   }
 
@@ -64,7 +67,7 @@ export class PlayGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.playService.clientDisconnect(client);
   }
 
-  async handleConnection(client: Socket, ...args: any[]) {
+  handleConnection(client: Socket, ...args: any[]) {
     this.logger.log(`Client connected: ${client.id}`);
   }
 }

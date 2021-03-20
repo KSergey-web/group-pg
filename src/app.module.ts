@@ -10,6 +10,8 @@ import { SharedModule } from './shared/shared.module';
 import { RoomModule } from './room/room.module';
 import { NoteModule } from './note/note.module';
 import { PlayModule } from './play/play.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -20,6 +22,9 @@ import { PlayModule } from './play/play.module';
     RoomModule,
     NoteModule,
     PlayModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static'),
+    }),
     //SocketModule,
   ],
   controllers: [AppController],

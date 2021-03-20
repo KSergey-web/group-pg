@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateNoteDTO } from 'src/note/dto/note.dto';
@@ -16,7 +15,11 @@ export class PlayService {
     private readonly noteService: NoteService,
   ) {}
 
-  @WebSocketServer() server: Server;
+  setServer(server){
+    this.server=server;
+  }
+
+  server: Server;
 
   private usersOnline = new Map();
   private roomsOnline = new Map();
@@ -25,6 +28,7 @@ export class PlayService {
   private logger: Logger = new Logger('PlatService');
 
   async auth(client: Socket, auth: AuthDto) {
+    //console.log(this.server);
     const token = auth.token;
     try {
       const user = await this.authService.verifyUser(token);
@@ -32,6 +36,7 @@ export class PlayService {
       this.logger.log(`auth ${this.usersOnline.get(user._id)}`);
     } catch (err) {
       this.logger.error(`Invalid token: ${token}`);
+      client.emit('errorAuth', {message:`Invalid token`});
     }
     return;
   }
@@ -40,6 +45,7 @@ export class PlayService {
     const client = this.getClient(userid);
     if (!client) return;
     client.join(room);
+    console.log(client.rooms);
     return;
   }
 
@@ -65,11 +71,24 @@ export class PlayService {
   clientLeaveRoom(client: Socket, room: string) {
     client.leave(room);
     this.checkOnlineInRoom(room);
+    this.logger.warn(`socket ${client.id}} leave ${room}`)
+    console.warn(`users in room ${room}`);
+    console.log(this.getClientsFromRoom(room));
     return;
   }
 
+  getClientsFromRoom(roomId:string): {} {
+    let sockets = this.server.sockets.adapter.rooms[roomId]?.sockets
+    if (sockets){
+    return sockets;
+    }
+    else{
+      {}
+    }
+  }
+
   getRandomColor(): string {
-    const number = Math.random() * (3 - 0) + 0;
+    const number = Math.floor(Math.random() * (3 - 0) + 0);
     let color: string;
     switch (number) {
       case 0:
@@ -82,7 +101,7 @@ export class PlayService {
         color = rateEnum.green;
         break;
       default:
-        this.logger.error('Error random');
+        this.logger.error(`Error random ${number}`);
     }
     return color;
   }
@@ -90,6 +109,7 @@ export class PlayService {
   initTimerForRoom(room: string) {
     let timerId = setInterval(() => {
       const color: string = this.getRandomColor();
+      console.log(` col ${color}`);
       this.server.to(room).emit('resultRate', { color });
       let rates = this.rates.get(room);
       if (rates.length == 0) {
@@ -97,7 +117,7 @@ export class PlayService {
       }
       this.noteService.createManyNotesWithResult(rates, color);
       rates.splice(0, rates.length);
-    }, 60000);
+    }, 20000);
     return timerId;
   }
 
@@ -108,6 +128,9 @@ export class PlayService {
       this.rates.set(room, []);
     }
     client.join(room);
+    this.logger.warn(`socket ${client.id} enter to ${room}`)
+    console.warn(`users in room ${room}`);
+    console.log(this.getClientsFromRoom(room));
     return;
   }
 
