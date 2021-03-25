@@ -1,10 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
-import { AuthService } from 'src/auth/auth.service';
-import { CreateNoteDTO } from 'src/note/dto/note.dto';
-import { NoteService } from 'src/note/note.service';
-import { rateEnum } from 'src/shared/enums/roulette.enum';
-import { UserService } from 'src/user/user.service';
+import { consoleOut } from 'src/debug';
+import { AuthService } from '../auth/auth.service';
+import { CreateNoteDTO } from '../note/dto/note.dto';
+import { NoteService } from '../note/note.service';
+import { rateEnum } from '../shared/enums/roulette.enum';
+import { UserService } from '../user/user.service';
 import { AuthDto, RateDTO } from './dto/play.dto';
 
 @Injectable()
@@ -25,7 +26,7 @@ export class PlayService {
   private roomsOnline = new Map();
   private rates: Map<string, Array<CreateNoteDTO>> = new Map();
 
-  private logger: Logger = new Logger('PlatService');
+  private logger: Logger = new Logger('PlayService');
 
   async auth(client: Socket, auth: AuthDto) {
     //console.log(this.server);
@@ -56,7 +57,7 @@ export class PlayService {
     return;
   }
 
-  getClient(userid: any) {
+  getClient(userid: any): Socket {
     if (!this.usersOnline.has(userid)) {
       this.logger.log(`user with id ${userid} offline`);
       return null;
@@ -117,7 +118,7 @@ export class PlayService {
       }
       this.noteService.createManyNotesWithResult(rates, color);
       rates.splice(0, rates.length);
-    }, 10000);
+    }, 4000);
     return timerId;
   }
 
@@ -131,6 +132,7 @@ export class PlayService {
     this.logger.warn(`socket ${client.id} enter to ${room}`)
     console.warn(`users in room ${room}`);
     console.log(this.getClientsFromRoom(room));
+    this.synchronization(client,room);
     return;
   }
 
@@ -163,5 +165,17 @@ export class PlayService {
     const roomId = Object.keys(client.rooms)[0];
     client.leaveAll();
     this.checkOnlineInRoom(roomId);
+  }
+
+  roomDeleted(roomId:string){
+    consoleOut(roomId);
+    this.server.to(roomId).emit('roomDeleted',{id: roomId});
+  }
+
+  synchronization(client: Socket,roomId:string){
+    const rates = this.rates.get(roomId);
+    rates.forEach(function(rate){
+      client.emit('someBodyRate', rate);
+    });
   }
 }

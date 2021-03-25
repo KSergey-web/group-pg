@@ -16,7 +16,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { promises } from 'dns';
-import { UserEntity, UserWithTokenEntity } from 'src/user/entities/user.entity';
+import { UserEntity, UserWithTokenEntity } from '../user/entities/user.entity';
 import { LoginDTO, RegisterDTO } from '../user/dto/user.dto';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';

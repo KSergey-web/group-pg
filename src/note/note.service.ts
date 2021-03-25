@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { resultEnum } from 'src/shared/enums/roulette.enum';
+import { resultEnum } from '../shared/enums/roulette.enum';
 import { CreateNoteDTO } from './dto/note.dto';
 import { Note, NoteDocument } from './schemas/note.schema';
 

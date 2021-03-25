@@ -5,7 +5,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { consoleOut } from 'src/debug';
+import { consoleOut } from '../debug';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -16,7 +16,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus
       ? exception.getStatus()
       : HttpStatus.INTERNAL_SERVER_ERROR;
-    // consoleOut(request,"req");
     let details: any =
       exception.getResponse != undefined ? exception.getResponse() : exception;
     const errorResponse = {

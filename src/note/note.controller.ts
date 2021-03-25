@@ -5,9 +5,9 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.gaurd';
-import { UserDocument } from 'src/user/schemas/user.schema';
-import { User } from 'src/utilities/user.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth.gaurd';
+import { UserDocument } from '../user/schemas/user.schema';
+import { User } from '../utilities/user.decorator';
 import { NoteEntity } from './entities/note.entity';
 import { NoteService } from './note.service';
 
@@ -31,7 +31,7 @@ export class NoteController {
         result: item.result,
         date: item.date,
         user: item.user.login.toString(),
-        room: item.room.name.toString(),
+        room: (item.room) ? item.room.name.toString() : "deleted",
       });
     });
     return notes;

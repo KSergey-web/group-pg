@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, MaxLength, MinLength } from 'class-validator';
-import { CreateNoteDTO } from 'src/note/dto/note.dto';
+import { CreateNoteDTO } from '../../note/dto/note.dto';
 
 export class CreateSocketDto {}
 

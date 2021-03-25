@@ -11,11 +11,10 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.gaurd';
-import { ObjectIdDTO } from 'src/shared/shared.dto';
-import { UserEntity } from 'src/user/entities/user.entity';
-import { UserDocument } from 'src/user/schemas/user.schema';
-import { User } from 'src/utilities/user.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth.gaurd';
+import { ObjectIdDTO } from '../shared/shared.dto';
+import { UserDocument } from '../user/schemas/user.schema';
+import { User } from '../utilities/user.decorator';
 import { CreateRoomDTO } from './dto/room.dto';
 import { RoomEntity } from './entities/room.entity';
 import { RoomService } from './room.service';
@@ -67,6 +66,6 @@ export class RoomController {
     @Param() params: ObjectIdDTO,
     @User() { _id }: UserDocument,
   ): Promise<any> {
-    return { message: this.roomService.deleteRoom(params.id, _id) };
+    return { message: await this.roomService.deleteRoom(params.id, _id) };
   }
 }

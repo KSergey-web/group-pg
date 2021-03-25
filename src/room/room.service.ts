@@ -1,11 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { PlayService } from 'src/play/play.service';
+import { consoleOut } from '../debug';
 import { Room, RoomDocument } from './schemas/room.schema';
 
 @Injectable()
 export class RoomService {
-  constructor(@InjectModel(Room.name) private roomModel: Model<RoomDocument>) {}
+  constructor(@InjectModel(Room.name) private roomModel: Model<RoomDocument>,
+  private readonly playService: PlayService,
+  ) {}
 
   async createRoom(name: string, userId: string): Promise<RoomDocument> {
     const room = new this.roomModel({ name: name, user: userId });
@@ -28,6 +32,7 @@ export class RoomService {
   }
 
   isOwner(room: RoomDocument, userId: string) {
+    consoleOut(`${room} ${userId}`)
     if (room.user.toString() != userId) {
       throw new HttpException(
         'You are not owner this room',
@@ -41,6 +46,7 @@ export class RoomService {
     const room = await this.getRoomById(roomId);
     this.isOwner(room, userId);
     await room.deleteOne();
+    this.playService.roomDeleted(room.id);
     return `Room ${roomId} deleted`;
   }
 }

@@ -16,9 +16,9 @@ import { join } from 'path';
 @Module({
   imports: [
     configModule,
+    SharedModule,
     MongooseModule.forRoot(process.env.MONGODB_WRITE_CONNECTION_STRING),
     AuthModule,
-    SharedModule,
     RoomModule,
     NoteModule,
     PlayModule,

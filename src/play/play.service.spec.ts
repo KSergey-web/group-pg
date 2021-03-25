@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { AppModule } from '../app.module';
 import { PlayService } from './play.service';
 
 describe('PlayService', () => {
@@ -6,7 +7,7 @@ describe('PlayService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PlayService],
+      imports:[AppModule],
     }).compile();
 
     service = module.get<PlayService>(PlayService);
@@ -14,5 +15,9 @@ describe('PlayService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('шшшшшш', () => {
+    console.log(service.getClientsFromRoom(''));
   });
 });

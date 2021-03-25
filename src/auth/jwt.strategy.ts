@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
-import { UserDocument } from 'src/user/schemas/user.schema';
+import { UserDocument } from '../user/schemas/user.schema';
 import { AuthService } from './auth.service';
 
 @Injectable()

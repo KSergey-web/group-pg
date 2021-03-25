@@ -25,24 +25,25 @@ export class LoginDTO {
   @IsAlphanumeric()
   @ApiProperty({
     example: 'skulaev',
-    description: 'It should contains only letters and numbers.',
+    description: 'It should contains only letters and numbers, minLength: 2, maxLength: 8,.',
     minLength: 2,
-    maxLength: 14,
+    maxLength: 8,
   })
   login: string;
 
   @IsString()
   @IsNotEmpty()
-  // @Matches(
+  @IsAlphanumeric()
+  //@Matches(
   // /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/,
-  // { message: 'Weak password' },
+  // { message: 'Password should corresponds to /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/' },
   //)
   @ApiProperty({
     example: 'Kulaev1999',
     description:
-      'should corresponds to /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/',
-    minLength: 2,
-    maxLength: 14,
+      'should be minLength: 4, maxLength: 10,',
+    minLength: 4,
+    maxLength: 10,
   })
   password: string;
 }

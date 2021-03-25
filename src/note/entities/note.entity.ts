@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import { rateEnum, resultEnum } from 'src/shared/enums/roulette.enum';
+import { rateEnum, resultEnum } from '../../shared/enums/roulette.enum';
 
 export class NoteEntity {
   @ApiProperty({ example: '603fdf6e6271140dc0fcf3cf' })

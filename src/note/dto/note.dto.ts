@@ -18,7 +18,7 @@ import {
   OmitType,
   PartialType,
 } from '@nestjs/swagger';
-import { rateEnum, resultEnum } from 'src/shared/enums/roulette.enum';
+import { rateEnum, resultEnum } from '../../shared/enums/roulette.enum';
 
 export class CreateNoteDTO {
   @ApiProperty()

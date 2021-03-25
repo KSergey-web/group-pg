@@ -10,8 +10,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { CreateNoteDTO } from 'src/note/dto/note.dto';
-import { ObjectIdDTO } from 'src/shared/shared.dto';
+import { ObjectIdDTO } from '../shared/shared.dto';
 import { AuthDto, RateDTO } from './dto/play.dto';
 import { RateEntity } from './entities/play.entity';
 import { PlayService } from './play.service';
