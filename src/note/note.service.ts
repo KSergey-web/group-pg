@@ -11,7 +11,7 @@ export class NoteService {
 
   async createNote(dto: CreateNoteDTO): Promise<NoteDocument> {
     console.log(dto);
-    const note = new this.noteModel(dto);
+    const note = new this.noteModel({...dto, date: new Date()});
     await note.save();
     note.populate('user');
     return note;
@@ -36,7 +36,7 @@ export class NoteService {
       user: userId,
     };
     const notes = await this.noteModel
-      .find(filter)
+      .find(filter).sort({ date: -1 })
       .populate('user', 'login')
       .populate('room', 'name').exec();
     return notes;

@@ -8,7 +8,7 @@ export type NoteDocument = Note & Document;
 
 @Schema()
 export class Note {
-  @Prop({ required: true, default: new Date() })
+  @Prop({ required: true })
   date: Date;
 
   @Prop({ required: true })
