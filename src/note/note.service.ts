@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { consoleOut } from 'src/debug';
 import { resultEnum } from '../shared/enums/roulette.enum';
 import { CreateNoteDTO } from './dto/note.dto';
 import { Note, NoteDocument } from './schemas/note.schema';
@@ -11,7 +12,8 @@ export class NoteService {
 
   async createNote(dto: CreateNoteDTO): Promise<NoteDocument> {
     console.log(dto);
-    const note = new this.noteModel(dto);
+    const note = new this.noteModel({...dto, date: new Date()});
+   
     await note.save();
     note.populate('user');
     return note;
@@ -37,8 +39,8 @@ export class NoteService {
     };
     const notes = await this.noteModel
       .find(filter)
-      .populate('user', 'login')
-      .populate('room', 'name').exec();
+      .populate('user', 'login').sort({ date: -1 })
+      .populate('room').exec();
     return notes;
   }
 }

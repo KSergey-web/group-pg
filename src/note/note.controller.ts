@@ -5,6 +5,9 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { consoleOut } from 'src/debug';
+import { Room } from 'src/room/schemas/room.schema';
+import { UserService } from 'src/user/user.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.gaurd';
 import { UserDocument } from '../user/schemas/user.schema';
 import { User } from '../utilities/user.decorator';
@@ -14,7 +17,9 @@ import { NoteService } from './note.service';
 @ApiTags('note')
 @Controller('note')
 export class NoteController {
-  constructor(private readonly noteService: NoteService) {}
+  constructor(private readonly noteService: NoteService,
+    private readonly userService: UserService
+    ) {}
   @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Array notes',
@@ -24,16 +29,18 @@ export class NoteController {
   @Get('all')
   async notes(@User() { _id }: UserDocument): Promise<Array<NoteEntity>> {
     let notes: Array<NoteEntity> = [];
-    (await this.noteService.getNotes(_id)).forEach(function(item, i, arr) {
+    let arrayDocuments = await this.noteService.getNotes(_id);
+    for (let i =0, host;i<arrayDocuments.length; ++i){
+      host = await this.userService.checkUserById((arrayDocuments[i].room as Room).user.toString());
       notes.push({
-        _id: item._id,
-        color: item.color,
-        result: item.result,
-        date: item.date,
-        user: item.user.login.toString(),
-        room: (item.room) ? item.room.name.toString() : "deleted",
+        _id: arrayDocuments[i]._id,
+        color: arrayDocuments[i].color,
+        result: arrayDocuments[i].result,
+        date: arrayDocuments[i].date,
+        user: host.login,
+        room: (arrayDocuments[i].room as Room).name,
       });
-    });
+    }
     return notes;
-  }
+    }
 }
