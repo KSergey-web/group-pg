@@ -19,7 +19,7 @@ export class RoomService {
   }
 
   async getRooms(): Promise<Array<RoomDocument>> {
-    const rooms = await this.roomModel.find().populate('user').exec();
+    const rooms = await this.roomModel.find({isDeleted:{$ne:true}}).populate('user').exec();
     return rooms;
   }
 
@@ -45,7 +45,8 @@ export class RoomService {
   async deleteRoom(roomId: string, userId: string): Promise<string> {
     const room = await this.getRoomById(roomId);
     this.isOwner(room, userId);
-    await room.deleteOne();
+    room.set({ isDeleted:true });
+    await room.save();
     this.playService.roomDeleted(room.id);
     return `Room ${roomId} deleted`;
   }

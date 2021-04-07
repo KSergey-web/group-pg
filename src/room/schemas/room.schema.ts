@@ -17,6 +17,9 @@ export class Room {
   })
   user: User;
 
+  @Prop({ required: false })
+  isDeleted?: boolean;
+
   @Prop({ select: false })
   __v: Number;
 }

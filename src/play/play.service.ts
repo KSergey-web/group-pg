@@ -169,7 +169,7 @@ export class PlayService {
 
   roomDeleted(roomId:string){
     consoleOut(roomId);
-    this.server.to(roomId).emit('roomDeleted',{id: roomId});
+    this.server.emit('roomDeleted',{id: roomId});
   }
 
   synchronization(client: Socket,roomId:string){
