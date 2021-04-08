@@ -3,7 +3,7 @@ import { RoomService } from './room.service';
 import { RoomController } from './room.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Room, RoomSchema } from './schemas/room.schema';
-import { PlayModule } from 'src/play/play.module';
+import { PlayModule } from '../play/play.module';
 
 @Module({
   imports: [

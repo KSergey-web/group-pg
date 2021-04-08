@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
-import { consoleOut } from 'src/debug';
+import { consoleOut } from '../debug';
 import { AuthService } from '../auth/auth.service';
 import { CreateNoteDTO } from '../note/dto/note.dto';
 import { NoteService } from '../note/note.service';

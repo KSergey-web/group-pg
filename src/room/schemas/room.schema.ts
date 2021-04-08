@@ -24,7 +24,7 @@ export class Room {
   isDeleted?: boolean;
 
   @Prop({ select: false })
-  __v: Number;
+  __v?: Number;
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);

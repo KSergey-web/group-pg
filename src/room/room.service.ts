@@ -1,8 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { PlayService } from 'src/play/play.service';
-import { consoleOut } from '../debug';
+import { PlayService } from '../play/play.service';
 import { Room, RoomDocument } from './schemas/room.schema';
 
 @Injectable()
@@ -32,7 +31,7 @@ export class RoomService {
   }
 
   isOwner(room: RoomDocument, userId: string) {
-    consoleOut(`${room} ${userId}`)
+    //consoleOut(`${room} ${userId}`)
     if (room.user.toString() != userId) {
       throw new HttpException(
         'You are not owner this room',

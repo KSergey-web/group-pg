@@ -5,9 +5,9 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { consoleOut } from 'src/debug';
-import { Room } from 'src/room/schemas/room.schema';
-import { UserService } from 'src/user/user.service';
+import { consoleOut } from '../debug';
+import { Room } from '../room/schemas/room.schema';
+import { UserService } from '../user/user.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.gaurd';
 import { UserDocument } from '../user/schemas/user.schema';
 import { User } from '../utilities/user.decorator';
