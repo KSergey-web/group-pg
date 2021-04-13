@@ -7,6 +7,9 @@ export type RoomDocument = Room & Document;
 
 @Schema()
 export class Room {
+
+  _id?: string;
+
   @Prop({ required: true })
   name: string;
 
@@ -17,8 +20,11 @@ export class Room {
   })
   user: User;
 
+  @Prop({ required: false })
+  isDeleted?: boolean;
+
   @Prop({ select: false })
-  __v: Number;
+  __v?: Number;
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);

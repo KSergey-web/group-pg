@@ -8,7 +8,10 @@ export type NoteDocument = Note & Document;
 
 @Schema()
 export class Note {
-  @Prop({ required: true })
+
+  _id?: string;
+
+  @Prop({ required: true})
   date: Date;
 
   @Prop({ required: true })
@@ -22,14 +25,14 @@ export class Note {
     ref: 'User',
     required: true,
   })
-  user: User;
+  user: User | string;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Room',
     required: true,
   })
-  room: Room;
+  room: Room | string;
 
   @Prop({ select: false })
   __v: Number;

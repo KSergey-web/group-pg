@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
-import { consoleOut } from 'src/debug';
+import { consoleOut } from '../debug';
 import { AuthService } from '../auth/auth.service';
 import { CreateNoteDTO } from '../note/dto/note.dto';
 import { NoteService } from '../note/note.service';
@@ -118,7 +118,7 @@ export class PlayService {
       }
       this.noteService.createManyNotesWithResult(rates, color);
       rates.splice(0, rates.length);
-    }, 10000);
+    }, 5000);
     return timerId;
   }
 
@@ -169,7 +169,7 @@ export class PlayService {
 
   roomDeleted(roomId:string){
     consoleOut(roomId);
-    this.server.to(roomId).emit('roomDeleted',{id: roomId});
+    this.server.emit('roomDeleted',{id: roomId});
   }
 
   synchronization(client: Socket,roomId:string){

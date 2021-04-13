@@ -36,9 +36,9 @@ export class NoteService {
       user: userId,
     };
     const notes = await this.noteModel
-      .find(filter).sort({ date: -1 })
-      .populate('user', 'login')
-      .populate('room', 'name').exec();
+      .find(filter)
+      .populate('user', 'login').sort({ date: -1 })
+      .populate('room').exec();
     return notes;
   }
 }
